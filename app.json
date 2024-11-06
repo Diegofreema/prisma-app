@@ -3,7 +3,6 @@
     "name": "prisma-app",
     "slug": "prisma-app",
     "version": "1.0.0",
-
     "scheme": "prisma-app",
     "web": {
       "bundler": "metro",
@@ -17,19 +16,16 @@
         {
           "launchMode": "most-recent"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
-
       "tsconfigPaths": true
     },
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -37,12 +33,19 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.diegodark.prismaapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.diegodark.prismaapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ddd3ebb5-b630-40db-9174-f0134983feae"
       }
     }
   }
