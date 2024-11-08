@@ -45,6 +45,7 @@ export const CustomInput = ({
           onChangeText={onChangeText}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
+          autoCapitalize="none"
         />
         {password && (
           <TouchableOpacity onPress={toggleSecure}>

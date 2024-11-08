@@ -13,23 +13,21 @@ type Props = {
   register?: boolean;
 };
 export const LoginForm = ({ register }: Props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+    name: '',
+  });
   const [errorEmail, setErrorEmail] = useState('');
-  const [name, setName] = useState('');
   const [errorName, setErrorName] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [secure, setSecure] = useState(true);
   const toggleSecure = () => setSecure((prev) => !prev);
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
+  const handleChange = (inputName: string, text: string) => {
+    setValues((prev) => ({ ...prev, [inputName]: text }));
   };
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-  };
-  const handleNameChange = (text: string) => {
-    setName(text);
-  };
+
+  console.log({ values });
 
   const handleSubmit = () => {
     if (register && name.trim() === '') {
@@ -53,12 +51,12 @@ export const LoginForm = ({ register }: Props) => {
       email,
       password,
     });
-    setEmail('');
-    setPassword('');
+
     setErrorEmail('');
     setErrorPassword('');
   };
 
+  const { email, password, name } = values;
   const disabled = email.trim() === '' || password.trim() === '';
   const buttonTitle = register ? 'Sign up' : 'Sign in';
   const bottomText = register ? 'Already' : 'Don’t';
@@ -72,7 +70,7 @@ export const LoginForm = ({ register }: Props) => {
           placeholder="eg John Doe"
           keyboardType="default"
           value={name}
-          onChangeText={handleNameChange}
+          onChangeText={(text) => handleChange('name', text)}
           error={errorName}
         />
       )}
@@ -81,7 +79,7 @@ export const LoginForm = ({ register }: Props) => {
         placeholder="Enter your email"
         keyboardType="email-address"
         value={email}
-        onChangeText={handleEmailChange}
+        onChangeText={(text) => handleChange('email', text)}
         error={errorEmail}
       />
       <CustomInput
@@ -89,7 +87,7 @@ export const LoginForm = ({ register }: Props) => {
         placeholder="Enter your password"
         keyboardType="default"
         value={password}
-        onChangeText={handlePasswordChange}
+        onChangeText={(text) => handleChange('password', text)}
         error={errorPassword}
         secureTextEntry={secure}
         toggleSecure={toggleSecure}
