@@ -1,10 +1,11 @@
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
+import { Toaster } from 'sonner-native';
 import { TamaguiProvider } from 'tamagui';
 
 import config from '../tamagui.config';
-
+SplashScreen.preventAutoHideAsync();
 export default function Layout() {
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
@@ -26,6 +27,7 @@ export default function Layout() {
           headerShown: false,
         }}
       />
+      <Toaster />
     </TamaguiProvider>
   );
 }

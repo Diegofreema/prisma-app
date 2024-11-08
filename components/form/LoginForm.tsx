@@ -18,6 +18,7 @@ export const LoginForm = ({ register }: Props) => {
     password: '',
     name: '',
   });
+
   const [errorEmail, setErrorEmail] = useState('');
   const [errorName, setErrorName] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
@@ -26,9 +27,7 @@ export const LoginForm = ({ register }: Props) => {
   const handleChange = (inputName: string, text: string) => {
     setValues((prev) => ({ ...prev, [inputName]: text }));
   };
-
-  console.log({ values });
-
+  const { email, password, name } = values;
   const handleSubmit = () => {
     if (register && name.trim() === '') {
       setErrorName('Please enter your name');
@@ -50,13 +49,17 @@ export const LoginForm = ({ register }: Props) => {
     console.log({
       email,
       password,
+      name,
     });
-
+    setValues({
+      email: '',
+      name: '',
+      password: '',
+    });
     setErrorEmail('');
     setErrorPassword('');
   };
 
-  const { email, password, name } = values;
   const disabled = email.trim() === '' || password.trim() === '';
   const buttonTitle = register ? 'Sign up' : 'Sign in';
   const bottomText = register ? 'Already' : 'Don’t';
