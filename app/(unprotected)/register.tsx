@@ -1,9 +1,12 @@
-import { Text, View } from 'react-native';
+import { LoginForm } from '~/components/form/LoginForm';
+import { Title } from '~/components/ui/Title';
+import { Wrapper } from '~/components/ui/Wrapper';
 
 export default function register() {
   return (
-    <View>
-      <Text> register</Text>
-    </View>
+    <Wrapper>
+      <Title title="Welcome" />
+      <LoginForm register />
+    </Wrapper>
   );
 }
