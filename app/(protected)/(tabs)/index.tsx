@@ -1,15 +1,16 @@
-import { useRouter } from 'expo-router';
-import { Button, Text, View } from 'react-native';
+import { useState } from 'react';
+
+import { SearchInput } from '~/components/SearchInput';
+import { Wrapper } from '~/components/ui/Wrapper';
 
 export default function Home() {
-  const router = useRouter();
-  const onPress = () => {
-    router.push('/login');
-  };
+  const [value, setValue] = useState('');
+  const onClear = () => setValue('');
+  const onChange = (value: string) => setValue(value);
+
   return (
-    <View>
-      <Button title="Navigate" onPress={onPress} />
-      <Text>Home</Text>
-    </View>
+    <Wrapper>
+      <SearchInput onChange={onChange} value={value} onClear={onClear} />
+    </Wrapper>
   );
 }
