@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'react-native';
-import { CartIcon } from '~/components/CartIcon';
 
+import { CartIcon } from '~/components/CartIcon';
 import { TabsIcon } from '~/components/TabsIcon';
 import { colors } from '~/constants';
 
