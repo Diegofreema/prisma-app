@@ -1,8 +1,11 @@
 /* eslint-disable prettier/prettier */
 
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { ProductResponse } from '~/type';
+import { trimText } from '~/utils';
 
 type Props = {
   product: ProductResponse;
@@ -10,17 +13,32 @@ type Props = {
 };
 
 export const ProductCard = ({ index, product }: Props): JSX.Element => {
+  const router = useRouter();
+  const onPress = () => {
+    router.push(`/product/${product.id}`);
+  };
   return (
-    <View style={[styles.card, { marginLeft: index % 1 === 0 ? 10 : 0, marginBottom: 15 }]}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.card,
+        { marginLeft: index % 1 === 0 ? 10 : 0, marginBottom: 15, opacity: pressed ? 0.5 : 1 },
+      ]}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: product.images[0] }} resizeMode="cover" style={styles.image} />
+        <Image
+          source={{ uri: product.images[0] }}
+          placeholder={require('~/assets/gig.gif')}
+          contentFit="cover"
+          style={styles.image}
+          placeholderContentFit="contain"
+        />
       </View>
       <View style={{ gap: 10 }}>
-        <Text style={styles.title}>{product.title}</Text>
+        <Text style={styles.title}>{trimText(product.title)}</Text>
         <Text>{product.category}</Text>
         <Text>${product.price}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -37,7 +55,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     borderRadius: 5,
-    height: 320,
+    minHeight: 320,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'gray',
     paddingHorizontal: 10,
