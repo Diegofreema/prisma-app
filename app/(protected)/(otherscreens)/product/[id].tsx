@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
 
+import { BottomButtons } from '~/components/BottomButtons';
 import { ProductDetail } from '~/components/ProductDetail';
 import { SimilarProducts } from '~/components/SimiliarProducts';
 import { ErrorComponent } from '~/components/ui/ErrorComponent';
@@ -12,6 +13,7 @@ import { useGetSimilarProducts, useGetSingleProduct } from '~/lib/tanstack/queri
 const ProductDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isPending, isError, refetch } = useGetSingleProduct(id);
+  const [qty, setQty] = useState(0);
   const {
     data: similar,
     isPending: isPendingSimilar,
@@ -29,11 +31,12 @@ const ProductDetails = () => {
   return (
     <Wrapper>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}>
         <ProductDetail product={data} />
         <SimilarProducts product={similar.products} />
       </ScrollView>
+      <BottomButtons id={data.id} stock={data.stock} qty={qty} />
     </Wrapper>
   );
 };

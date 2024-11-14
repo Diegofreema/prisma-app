@@ -3,6 +3,7 @@
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors } from '~/constants';
 
 import { ProductResponse } from '~/type';
 import { trimText } from '~/utils';
@@ -26,6 +27,7 @@ export const ProductCard = ({ index = 0, product, width, height }: Props): JSX.E
   const onPress = () => {
     router.push(`/product/${product.id}`);
   };
+  const percentageDiscount = (product.discountPercentage / 100) * 100;
   return (
     <Pressable
       onPress={onPress}
@@ -39,6 +41,9 @@ export const ProductCard = ({ index = 0, product, width, height }: Props): JSX.E
           height: height ? height : 400,
         },
       ]}>
+      <View style={styles.discountContainer}>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>-{percentageDiscount}%</Text>
+      </View>
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: product.images[0] }}
@@ -99,5 +104,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
+  },
+  discountContainer: {
+    position: 'absolute',
+    top: 4,
+    right: -6,
+    backgroundColor: colors.yellow,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 5,
+    zIndex: 10,
   },
 });
