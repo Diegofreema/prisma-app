@@ -21,7 +21,7 @@ export const ErrorComponent = ({ onRefetch }: Props): JSX.Element => {
         }}>
         Something went wrong
       </Text>
-      <CustomButton buttonTitle="Retry" onPress={onRefetch} />
+      <CustomButton style={{ width: 200 }} buttonTitle="Retry" onPress={onRefetch} />
     </View>
   );
 };

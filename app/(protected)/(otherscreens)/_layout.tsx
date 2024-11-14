@@ -22,8 +22,9 @@ const OtherScreenLayout = () => {
               <AntDesign name="arrowleft" size={24} color="black" />
             </Pressable>
           ),
-        }}
-      />
+        }}>
+        <Stack.Screen name="product/[id]" options={{ title: 'Product Detail' }} />
+      </Stack>
     </>
   );
 };

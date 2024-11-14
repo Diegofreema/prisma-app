@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Product } from '~/components/Product';
 
+import { Product } from '~/components/Product';
 import { SearchInput } from '~/components/SearchInput';
 import { ErrorComponent } from '~/components/ui/ErrorComponent';
 import { Loading } from '~/components/ui/Loading';

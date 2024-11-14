@@ -1,23 +1,38 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView } from 'react-native';
 
+import { ProductDetail } from '~/components/ProductDetail';
+import { SimilarProducts } from '~/components/SimiliarProducts';
 import { ErrorComponent } from '~/components/ui/ErrorComponent';
 import { Loading } from '~/components/ui/Loading';
 import { Wrapper } from '~/components/ui/Wrapper';
-import { useGetSingleProduct } from '~/lib/tanstack/queries';
+import { useGetSimilarProducts, useGetSingleProduct } from '~/lib/tanstack/queries';
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isPending, isError, refetch } = useGetSingleProduct(id);
-  if (isError) return <ErrorComponent onRefetch={refetch} />;
+  const {
+    data: similar,
+    isPending: isPendingSimilar,
+    isError: isErrorSimilar,
+    refetch: refetchSimilar,
+  } = useGetSimilarProducts(data?.category!);
+  const handleRefetch = () => {
+    refetch();
+    refetchSimilar();
+  };
+  if (isError || isErrorSimilar) return <ErrorComponent onRefetch={handleRefetch} />;
 
-  if (isPending) return <Loading />;
+  if (isPending || isPendingSimilar) return <Loading />;
 
   return (
     <Wrapper>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text>{JSON.stringify(data, null, 2)}</Text>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
+        showsVerticalScrollIndicator={false}>
+        <ProductDetail product={data} />
+        <SimilarProducts product={similar.products} />
       </ScrollView>
     </Wrapper>
   );

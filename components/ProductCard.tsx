@@ -9,11 +9,20 @@ import { trimText } from '~/utils';
 
 type Props = {
   product: ProductResponse;
-  index: number;
+  index?: number;
+  width?: number;
+  height?: number;
 };
 
-export const ProductCard = ({ index, product }: Props): JSX.Element => {
+export const ProductCard = ({ index = 0, product, width, height }: Props): JSX.Element => {
   const router = useRouter();
+  // to check percentage discount
+  const newPriceBasedOnDiscountPercentage =
+    (product.price * (100 - product.discountPercentage)) / 100;
+  // to make the discount have two decimal places
+  const priceWithDiscount = newPriceBasedOnDiscountPercentage.toFixed(2);
+  // to check if there is discount
+  const thereIsDiscount = product.discountPercentage > 0;
   const onPress = () => {
     router.push(`/product/${product.id}`);
   };
@@ -22,7 +31,13 @@ export const ProductCard = ({ index, product }: Props): JSX.Element => {
       onPress={onPress}
       style={({ pressed }) => [
         styles.card,
-        { marginLeft: index % 1 === 0 ? 10 : 0, marginBottom: 15, opacity: pressed ? 0.5 : 1 },
+        {
+          marginLeft: index % 1 === 0 ? 10 : 0,
+          marginBottom: 20,
+          opacity: pressed ? 0.5 : 1,
+          width,
+          height: height ? height : 400,
+        },
       ]}>
       <View style={styles.imageContainer}>
         <Image
@@ -35,8 +50,16 @@ export const ProductCard = ({ index, product }: Props): JSX.Element => {
       </View>
       <View style={{ gap: 10 }}>
         <Text style={styles.title}>{trimText(product.title)}</Text>
-        <Text>{product.category}</Text>
-        <Text>${product.price}</Text>
+        {!width && <Text>{product.category}</Text>}
+        <Text
+          style={{
+            textDecorationLine: thereIsDiscount ? 'line-through' : 'none',
+            fontWeight: 'bold',
+            color: '#ccc',
+          }}>
+          ₦{product.price}
+        </Text>
+        {thereIsDiscount && <Text style={{ fontWeight: 'bold' }}>₦{priceWithDiscount}</Text>}
       </View>
     </Pressable>
   );
@@ -55,12 +78,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     borderRadius: 5,
-    minHeight: 320,
+
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'gray',
     paddingHorizontal: 10,
     paddingVertical: 10,
-    paddingBottom: 20,
   },
   imageContainer: {
     width: '100%',
