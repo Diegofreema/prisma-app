@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import { AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '~/constants';
@@ -13,11 +14,17 @@ type Props = {
 const { width } = Dimensions.get('window');
 
 export const BottomButtons = ({ id, qty, stock }: Props): JSX.Element => {
+  const router = useRouter();
+  const onPress = () => {
+    router.push('/');
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
+      <Pressable
+        style={({ pressed }) => [styles.iconContainer, { opacity: pressed ? 0.5 : 1 }]}
+        onPress={onPress}>
         <AntDesign name="home" size={30} color={colors.yellow} />
-      </View>
+      </Pressable>
       <View style={styles.iconContainer}>
         <AntDesign name="phone" size={30} color={colors.yellow} />
       </View>

@@ -26,7 +26,7 @@ export const useGetSimilarProducts = (category: string) => {
   return useQuery<ProductType>({
     queryKey: ['similar_products', category],
     queryFn: async () => {
-      const { data } = await axios(`https://dummyjson.com/products/category/${category}?limit=5`);
+      const { data } = await axios(`https://dummyjson.com/products/category/${category}?limit=6`);
       return data;
     },
   });
