@@ -9,13 +9,13 @@ import { ProductReviews } from './ProductReviews';
 import { SimilarProducts } from './SimiliarProducts';
 
 import { ProductResponse } from '~/type';
+import { Slider } from './Slider';
 
 type Props = {
   product: ProductResponse;
   similar: ProductResponse[];
 };
 
-const { height } = Dimensions.get('window');
 export const ProductDetail = ({ product, similar }: Props): JSX.Element => {
   return (
     <FlatList
@@ -23,15 +23,7 @@ export const ProductDetail = ({ product, similar }: Props): JSX.Element => {
       contentContainerStyle={{ paddingBottom: 100 }}
       ListHeaderComponent={() => (
         <View style={{ flex: 1 }}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              contentFit="contain"
-              source={{ uri: product.images[0] }}
-              placeholder={require('~/assets/gig.gif')}
-              placeholderContentFit="contain"
-            />
-          </View>
+          <Slider images={product.images} />
           <Divider />
           {/* product into */}
           <ProductInfo
@@ -56,14 +48,3 @@ export const ProductDetail = ({ product, similar }: Props): JSX.Element => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  imageContainer: {
-    width: '100%',
-    height: height * 0.4,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-});

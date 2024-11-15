@@ -2,7 +2,7 @@
 
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { colors } from '~/constants';
 

@@ -27,7 +27,7 @@ export const ProductCard = ({ index = 0, product, width, height }: Props): JSX.E
   const onPress = () => {
     router.push(`/product/${product.id}`);
   };
-  const percentageDiscount = Math.floor((product.discountPercentage / 100) * 100);
+  const percentageDiscount = Math.floor(product.discountPercentage);
   return (
     <Pressable
       onPress={onPress}
