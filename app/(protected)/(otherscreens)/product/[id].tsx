@@ -11,7 +11,6 @@ import { useGetSimilarProducts, useGetSingleProduct } from '~/lib/tanstack/queri
 const ProductDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isPending, isError, refetch } = useGetSingleProduct(id);
-  const [qty, setQty] = useState(0);
   const {
     data: similar,
     isPending: isPendingSimilar,
@@ -39,7 +38,7 @@ const ProductDetails = () => {
   return (
     <Wrapper>
       <ProductDetail product={data} similar={filterSimilarProduct} />
-      <BottomButtons id={data.id} stock={data.stock} qty={qty} />
+      <BottomButtons item={data} stock={data.stock} />
     </Wrapper>
   );
 };

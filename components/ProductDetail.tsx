@@ -1,15 +1,14 @@
 /* eslint-disable prettier/prettier */
 
-import { Image } from 'expo-image';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { Divider } from './Divider';
 import { ProductInfo } from './ProductDecription';
 import { ProductReviews } from './ProductReviews';
 import { SimilarProducts } from './SimiliarProducts';
+import { Slider } from './Slider';
 
 import { ProductResponse } from '~/type';
-import { Slider } from './Slider';
 
 type Props = {
   product: ProductResponse;

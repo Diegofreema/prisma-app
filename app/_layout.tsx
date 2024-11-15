@@ -2,6 +2,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 import { TamaguiProvider } from 'tamagui';
 
@@ -25,15 +26,17 @@ export default function Layout() {
   if (!loaded) return null;
 
   return (
-    <TamaguiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        />
-      </QueryClientProvider>
-      <Toaster />
-    </TamaguiProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <TamaguiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </QueryClientProvider>
+        <Toaster />
+      </TamaguiProvider>
+    </GestureHandlerRootView>
   );
 }

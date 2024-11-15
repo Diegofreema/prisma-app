@@ -2,22 +2,42 @@
 
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Dimensions, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { toast } from 'sonner-native';
 
 import { colors } from '~/constants';
+import { useCartStore } from '~/lib/zustand/cart';
+import { ProductResponse } from '~/type';
 
 type Props = {
-  id: number;
-  qty: number;
+  item: ProductResponse;
   stock: number;
 };
 const { width } = Dimensions.get('window');
 
-export const BottomButtons = ({ id, qty, stock }: Props): JSX.Element => {
+export const BottomButtons = ({ item, stock }: Props): JSX.Element => {
+  const addToCart = useCartStore((state) => state.addItem);
+  const removesFromCart = useCartStore((state) => state.removeItem);
+  const qtyInCart = useCartStore((state) => state.items.find((i) => i.id === item.id))?.qty || 0;
   const router = useRouter();
   const onPress = () => {
     router.push('/');
   };
+  const onAddItem = () => {
+    if (qtyInCart === stock)
+      return toast.error('Product is out of stock', {
+        description: 'Can not add more than available stock',
+      });
+
+    addToCart({ id: item.id, title: item.title, price: item.price, qty: 1, img: item.thumbnail });
+    toast.success('Cart has been updated');
+  };
+  const onRemoveFromCart = () => {
+    if (qtyInCart === 0) return;
+    removesFromCart(item.id);
+    toast.success('Cart has been updated');
+  };
+  const renderControlButtons = qtyInCart > 0;
   return (
     <View style={styles.container}>
       <Pressable
@@ -25,13 +45,32 @@ export const BottomButtons = ({ id, qty, stock }: Props): JSX.Element => {
         onPress={onPress}>
         <AntDesign name="home" size={30} color={colors.yellow} />
       </Pressable>
+
       <View style={styles.iconContainer}>
         <AntDesign name="phone" size={30} color={colors.yellow} />
       </View>
-      <Pressable style={styles.pressable}>
-        <AntDesign name="shoppingcart" size={30} color={colors.white} style={styles.absCart} />
-        <Text style={styles.pressText}>Add to Cart</Text>
-      </Pressable>
+
+      {renderControlButtons && (
+        <View style={styles.controls}>
+          <TouchableOpacity
+            disabled={qtyInCart === 0}
+            onPress={onRemoveFromCart}
+            style={styles.iconStyle}>
+            <AntDesign name="minus" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text>{qtyInCart}</Text>
+          <TouchableOpacity style={styles.iconStyle} onPress={onAddItem}>
+            <AntDesign name="plus" size={30} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {!renderControlButtons && (
+        <TouchableOpacity disabled={stock === 0} style={styles.pressable} onPress={onAddItem}>
+          <AntDesign name="shoppingcart" size={30} color={colors.white} style={styles.absCart} />
+          <Text style={styles.pressText}>Add to Cart</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -72,5 +111,18 @@ const styles = StyleSheet.create({
   absCart: {
     position: 'absolute',
     left: 4,
+  },
+  controls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  iconStyle: {
+    borderRadius: 5,
+    padding: 10,
+    backgroundColor: colors.yellow,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
