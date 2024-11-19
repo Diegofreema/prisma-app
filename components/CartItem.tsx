@@ -8,6 +8,7 @@ import { UpdateButtons } from './ui/UpdateButtons';
 import { colors } from '~/constants';
 import { useCartStore } from '~/lib/zustand/cart';
 import { CartItem as CartItemType } from '~/type';
+import { toast } from 'sonner-native';
 
 type Props = {
   item: CartItemType;
@@ -43,9 +44,11 @@ const Controls = ({ item }: { item: CartItemType }) => {
   const decrease = useCartStore((state) => state.removeItem);
   const deleteFromCart = useCartStore((state) => state.deleteFromCart);
   const onIncrease = () => {
+    toast.success('Cart has been updated');
     increase(item);
   };
   const onDecrease = () => {
+    toast.success('Cart has been updated');
     decrease(item.id);
   };
   const disableIncrease = item.qty === item.stock;
