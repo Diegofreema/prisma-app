@@ -3,6 +3,8 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, StatusBar } from 'react-native';
 
+import { CartIcon } from '~/components/CartIcon';
+
 const OtherScreenLayout = () => {
   const router = useRouter();
   const onPress = () => {
@@ -22,6 +24,7 @@ const OtherScreenLayout = () => {
               <AntDesign name="arrowleft" size={24} color="black" />
             </Pressable>
           ),
+          headerRight: () => <CartIcon />,
         }}>
         <Stack.Screen name="product/[id]" options={{ title: 'Product Detail' }} />
       </Stack>
