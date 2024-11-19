@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { Href, Link } from 'expo-router';
+import { Href, Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -24,6 +24,7 @@ export const LoginForm = ({ register }: Props) => {
   const [errorPassword, setErrorPassword] = useState('');
   const [secure, setSecure] = useState(true);
   const toggleSecure = () => setSecure((prev) => !prev);
+  const router = useRouter();
   const handleChange = (inputName: string, text: string) => {
     setValues((prev) => ({ ...prev, [inputName]: text }));
   };
@@ -45,7 +46,8 @@ export const LoginForm = ({ register }: Props) => {
       return;
     }
 
-    // Perform login logic
+    router.replace('/');
+
     console.log({
       email,
       password,

@@ -5,6 +5,8 @@ import { useRouter } from 'expo-router';
 import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { toast } from 'sonner-native';
 
+import { UpdateButtons } from './ui/UpdateButtons';
+
 import { colors } from '~/constants';
 import { useCartStore } from '~/lib/zustand/cart';
 import { ProductResponse } from '~/type';
@@ -29,7 +31,15 @@ export const BottomButtons = ({ item, stock }: Props): JSX.Element => {
         description: 'Can not add more than available stock',
       });
 
-    addToCart({ id: item.id, title: item.title, price: item.price, qty: 1, img: item.thumbnail });
+    addToCart({
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      qty: 1,
+      img: item.thumbnail,
+      stock: item.stock,
+      brand: item.brand,
+    });
     toast.success('Cart has been updated');
   };
   const onRemoveFromCart = () => {
@@ -51,18 +61,7 @@ export const BottomButtons = ({ item, stock }: Props): JSX.Element => {
       </View>
 
       {renderControlButtons && (
-        <View style={styles.controls}>
-          <TouchableOpacity
-            disabled={qtyInCart === 0}
-            onPress={onRemoveFromCart}
-            style={styles.iconStyle}>
-            <AntDesign name="minus" size={30} color={colors.white} />
-          </TouchableOpacity>
-          <Text>{qtyInCart}</Text>
-          <TouchableOpacity style={styles.iconStyle} onPress={onAddItem}>
-            <AntDesign name="plus" size={30} color={colors.white} />
-          </TouchableOpacity>
-        </View>
+        <UpdateButtons qtyInCart={qtyInCart} onIncrease={onAddItem} onDecrease={onRemoveFromCart} />
       )}
 
       {!renderControlButtons && (
@@ -111,18 +110,5 @@ const styles = StyleSheet.create({
   absCart: {
     position: 'absolute',
     left: 4,
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  iconStyle: {
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: colors.yellow,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

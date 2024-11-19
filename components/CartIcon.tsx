@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import { AntDesign } from '@expo/vector-icons';
+import { usePathname, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '~/constants';
@@ -8,7 +9,15 @@ import { useCartStore } from '~/lib/zustand/cart';
 
 export const CartIcon = () => {
   const cartItemLength = useCartStore((state) => state.items.length);
-  const onPress = () => {};
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const isCartScreen = pathname === '/cart';
+  const onPress = () => {
+    router.push('/cart');
+  };
+
+  if (isCartScreen) return null;
   return (
     <Pressable
       onPress={onPress}
