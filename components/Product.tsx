@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { FlashList } from '@shopify/flash-list';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { ProductCard } from './ProductCard';
 
@@ -20,6 +20,11 @@ export const Product = ({ data }: Props): JSX.Element => {
         showsVerticalScrollIndicator={false}
         numColumns={2}
         contentContainerStyle={{ paddingVertical: 10, paddingHorizontal: 5 }}
+        ListEmptyComponent={() => (
+          <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'center' }}>
+            No products found
+          </Text>
+        )}
       />
     </View>
   );

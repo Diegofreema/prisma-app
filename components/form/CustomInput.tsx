@@ -24,6 +24,7 @@ type Props = {
   password?: boolean;
   toggleSecure?: () => void;
   style?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 };
 
 export const CustomInput = ({
@@ -37,9 +38,10 @@ export const CustomInput = ({
   password,
   toggleSecure,
   style,
+  containerStyle,
 }: Props): JSX.Element => {
   return (
-    <View>
+    <View style={containerStyle}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={[styles.container, style]}>
         <TextInput

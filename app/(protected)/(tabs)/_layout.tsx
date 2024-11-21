@@ -59,6 +59,16 @@ export default function TabsLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="favorite"
+          options={{
+            title: '',
+            tabBarLabel: 'Favorite',
+            tabBarIcon: ({ focused, size }) => (
+              <TabsIcon focused={focused} name="heart" size={size} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   );

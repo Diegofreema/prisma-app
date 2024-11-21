@@ -2,13 +2,13 @@
 
 import { Image } from 'expo-image';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { toast } from 'sonner-native';
 
 import { UpdateButtons } from './ui/UpdateButtons';
 
 import { colors } from '~/constants';
 import { useCartStore } from '~/lib/zustand/cart';
 import { CartItem as CartItemType } from '~/type';
-import { toast } from 'sonner-native';
 
 type Props = {
   item: CartItemType;

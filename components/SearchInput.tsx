@@ -22,6 +22,7 @@ export const SearchInput = ({ onChange, value, onClear }: Props): JSX.Element =>
         onChangeText={onChange}
         placeholder="Search by name"
         style={{ borderWidth: 0, flex: 1 }}
+        containerStyle={{ flex: 1 }}
       />
       {value && (
         <Pressable onPress={onClear}>
