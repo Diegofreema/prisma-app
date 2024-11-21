@@ -8,17 +8,18 @@ import { CustomInput } from './CustomInput';
 import { CustomButton } from '../ui/CustomButton';
 
 import { validateEmail, validatePassword } from '~/utils';
+import { toast } from 'sonner-native';
 
 type Props = {
   register?: boolean;
 };
 export const LoginForm = ({ register }: Props) => {
   const [values, setValues] = useState({
-    email: '',
+    username: '',
     password: '',
     name: '',
   });
-
+  const [loading, setLoading] = useState(false);
   const [errorEmail, setErrorEmail] = useState('');
   const [errorName, setErrorName] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
@@ -28,41 +29,47 @@ export const LoginForm = ({ register }: Props) => {
   const handleChange = (inputName: string, text: string) => {
     setValues((prev) => ({ ...prev, [inputName]: text }));
   };
-  const { email, password, name } = values;
-  const handleSubmit = () => {
+  const { username, password, name } = values;
+  const handleSubmit = async () => {
     if (register && name.trim() === '') {
       setErrorName('Please enter your name');
       return;
     }
-    if (!validateEmail(email)) {
-      setErrorEmail('Please enter a valid email address');
-      return;
+    setLoading(true);
+    try {
+      const res = await fetch('https://dummyjson.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: 'emilys',
+          password: 'emilyspass',
+        }),
+        credentials: 'include', // Include cookies (e.g., accessToken) in the request
+      });
+      const response = await res.json();
+      console.log(response);
+
+      setValues({
+        username: '',
+        name: '',
+        password: '',
+      });
+      setErrorEmail('');
+      setErrorPassword('');
+      toast.success('Success', {
+        description: 'Welcome back!',
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong', {
+        description: 'Please try again later!!',
+      });
+    } finally {
+      setLoading(false);
     }
-    if (!validatePassword(password)) {
-      setErrorPassword(
-        'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.'
-      );
-
-      return;
-    }
-
-    router.replace('/');
-
-    console.log({
-      email,
-      password,
-      name,
-    });
-    setValues({
-      email: '',
-      name: '',
-      password: '',
-    });
-    setErrorEmail('');
-    setErrorPassword('');
   };
 
-  const disabled = email.trim() === '' || password.trim() === '';
+  const disabled = username.trim() === '' || password.trim() === '';
   const buttonTitle = register ? 'Sign up' : 'Sign in';
   const bottomText = register ? 'Already' : 'Don’t';
   const actionText = register ? 'Sign in' : 'Sign up';
@@ -80,11 +87,11 @@ export const LoginForm = ({ register }: Props) => {
         />
       )}
       <CustomInput
-        label="Email"
-        placeholder="Enter your email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={(text) => handleChange('email', text)}
+        label="Username"
+        placeholder="Enter your username"
+        keyboardType="default"
+        value={username}
+        onChangeText={(text) => handleChange('username', text)}
         error={errorEmail}
       />
       <CustomInput
@@ -98,10 +105,16 @@ export const LoginForm = ({ register }: Props) => {
         toggleSecure={toggleSecure}
         password
       />
-      <CustomButton disabled={disabled} buttonTitle={buttonTitle} onPress={handleSubmit} />
+      <CustomButton
+        isLoading={loading}
+        disabled={false}
+        buttonTitle={buttonTitle}
+        onPress={handleSubmit}
+      />
 
       <Link href={href} asChild>
         <Text style={styles.account}>
+          {' '}
           {bottomText} have an account? <Text style={styles.register}>{actionText}</Text>
         </Text>
       </Link>

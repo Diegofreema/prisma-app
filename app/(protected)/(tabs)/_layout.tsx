@@ -29,26 +29,7 @@ export default function TabsLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="menu"
-          options={{
-            title: '',
-            tabBarLabel: 'Menu',
-            tabBarIcon: ({ focused, size }) => (
-              <TabsIcon focused={focused} name="bars" size={size} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="more"
-          options={{
-            title: '',
-            tabBarLabel: 'More',
-            tabBarIcon: ({ focused, size }) => (
-              <TabsIcon focused={focused} name="amazon" size={size} />
-            ),
-          }}
-        />
+
         <Tabs.Screen
           name="account"
           options={{
