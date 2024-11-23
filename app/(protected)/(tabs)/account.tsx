@@ -1,14 +1,12 @@
-import { useRouter } from 'expo-router';
-import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Account } from '~/components/Account';
+import { Wrapper } from '~/components/ui/Wrapper';
 
-const Account = () => {
-  const router = useRouter();
+const account = () => {
   return (
-    <View>
-      <Button title="Logout" onPress={() => router.push('/login')} />
-    </View>
+    <Wrapper>
+      <Account />
+    </Wrapper>
   );
 };
 
-export default Account;
+export default account;

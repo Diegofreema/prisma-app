@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { Href, Link, useRouter } from 'expo-router';
+import { Href, Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -9,6 +9,7 @@ import { CustomButton } from '../ui/CustomButton';
 
 import { validateEmail, validatePassword } from '~/utils';
 import { toast } from 'sonner-native';
+import { useToken } from '~/lib/zustand/token';
 
 type Props = {
   register?: boolean;
@@ -19,13 +20,15 @@ export const LoginForm = ({ register }: Props) => {
     password: '',
     name: '',
   });
+
+  const setToken = useToken((state) => state.setToken);
   const [loading, setLoading] = useState(false);
   const [errorEmail, setErrorEmail] = useState('');
   const [errorName, setErrorName] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [secure, setSecure] = useState(true);
   const toggleSecure = () => setSecure((prev) => !prev);
-  const router = useRouter();
+
   const handleChange = (inputName: string, text: string) => {
     setValues((prev) => ({ ...prev, [inputName]: text }));
   };
@@ -41,14 +44,13 @@ export const LoginForm = ({ register }: Props) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: 'emilys',
-          password: 'emilyspass',
+          username: values.username,
+          password: values.password,
         }),
-        credentials: 'include', // Include cookies (e.g., accessToken) in the request
+        credentials: 'include',
       });
       const response = await res.json();
-      console.log(response);
-
+      setToken(response.accessToken);
       setValues({
         username: '',
         name: '',
@@ -107,14 +109,13 @@ export const LoginForm = ({ register }: Props) => {
       />
       <CustomButton
         isLoading={loading}
-        disabled={false}
+        disabled={disabled || loading}
         buttonTitle={buttonTitle}
         onPress={handleSubmit}
       />
 
       <Link href={href} asChild>
         <Text style={styles.account}>
-          {' '}
           {bottomText} have an account? <Text style={styles.register}>{actionText}</Text>
         </Text>
       </Link>
